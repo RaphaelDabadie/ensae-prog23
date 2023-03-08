@@ -55,15 +55,57 @@ class Graph:
         dist: numeric (int or float), optional
             Distance between node1 and node2 on the edge. Default is 1.
         """
-        raise NotImplementedError
+        self.nb_edges+=1
+        self.graph[node1].append((node2,power_min, dist))
+        self.graph[node2].append((node1,power_min, dist))
+        
     
 
     def get_path_with_power(self, src, dest, power):
-        raise NotImplementedError
+        noeud_visite = {noeud:False for noeud in self.nodes}
+
+        def dfs2(node, path):
+            if node==dest: #on arrête le trajet quand on a atteint la destination souhaitée dest
+                return path
+            for voisin in self.graph[node]: #on va chercher les voisins du point de départ "src"
+                if not noeud_visite[voisin[0]] and power>=voisin[1]: # on s'assure que power est bien supérieure ou égale à power_min
+                        noeud_visite[voisin[0]]=True
+                        composante = dfs2(voisin[0], path+[voisin[0]])
+                        if composante is not None:
+                            return composante
+            return None    #on retourne None au cas où la puissance power n'est pas suffisante
+        return dfs2(src, [src])
+
+
+#question 5 : ligne 74, rajouter une variable distance_agrégée (et distance_agrégée_min qui somme les puissances des noeuds et retourner au final la distance agrégée la plus faible 
+
+
+
+
+        
+    
+        
+
     
 
     def connected_components(self):
-        raise NotImplementedError
+        listes_composantes =[]
+        noeud_visite = {noeud:False for noeud in self.nodes}
+
+        def dfs(noeud):
+            componante =[noeud]
+            for neighbour in self.graph[noeud]:
+                neighbour= neighbour[0]
+                if not noeud_visite[neighbour]:
+                    noeud_visite[neighbour]=True
+                    componante+= dfs(neighbour)
+            return (componante)
+
+        for noeud in self.nodes:
+            if not noeud_visite[noeud]:
+                listes_composantes.append(dfs(noeud))
+        
+        return listes_composantes
 
 
     def connected_components_set(self):
@@ -77,7 +119,60 @@ class Graph:
         """
         Should return path, min_power. 
         """
-        raise NotImplementedError
+        #liste triée de toutes les power, partir de la puissance du milieu et utiliser gpwp. Si on en a, on va chercher voiture avec puissance plus basse et inversement sinon
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        def get_path_with_power(self, src, dest, power):
+            noeud_visite = {noeud:False for noeud in self.nodes}
+
+            def dfs2(node, path):
+                if node==dest: #on arrête le trajet quand on a atteint la destination souhaitée dest
+                    return path
+                for voisin in self.graph[node]: #on va chercher les voisins du point de départ "src"
+                    if not noeud_visite[voisin[0]] and power>=voisin[1]: # on s'assure que power est bien supérieure ou égale à power_min
+                            noeud_visite[voisin[0]]=True
+                            composante = dfs2(voisin[0], path+[voisin[0]])
+                            if composante is not None:
+                                return composante
+                return None    #on retourne None au cas où la puissance power n'est pas suffisante
+            return dfs2(src, [src])
+
+        #Réutiliser la question 3, calculer les puissances min nécessaires en comparant entre les trajets
+        puissance=0
+        puissance_min=float('inf')
+        chemins_possibles=get_path_with_power(self, src, dest, puissance_min)
+        if chemins_possibles==None:
+            return None
+        else :
+            for el in chemins_possibles:
+                for j in range (el):
+                    for i in range (len(self.graph[j])):
+                        if self.graph[j][i]==el[j+1]:
+                            puissance+=self.graph[j][i][1]
+                    if puissance<=puissance_min:
+                        puissance_min=puissance
+            return puissance_min
+
+
+
+
+
+
+            
 
 
 def graph_from_file(filename):
@@ -100,4 +195,23 @@ def graph_from_file(filename):
     G: Graph
         An object of the class Graph with the graph from file_name.
     """
-    raise NotImplementedError
+    with open(filename) as file:
+        ligne1 = file.readline().split()
+        n=int(ligne1[0])
+        m=int(ligne1[1])
+        nodes= [i for i in range (1,n+1)]
+        G=Graph(nodes)
+        for i in range(m):
+            lignei=file.readline().split()
+            node1= int(lignei[0])
+            node2= int(lignei[1])
+            power_min=int(lignei[2])
+            if len(lignei)>3:
+                dist = int(lignei[3])
+                G.add_edge(node1, node2, power_min, dist)
+            else :
+                G.add_edge(node1, node2, power_min, dist=1)
+    return G
+
+
+
