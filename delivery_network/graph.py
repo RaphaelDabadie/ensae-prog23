@@ -79,22 +79,23 @@ class Graph:
 
 #question 5 
 
-def get_path_with_power2(self, src, dest, power):
-        noeud_visite = {noeud:False for noeud in self.nodes}
 
-        def dfs3(node, path):
-            distance=0
-            if node==dest: #on arrête le trajet quand on a atteint la destination souhaitée dest
-                return path
-            for voisin in self.graph[node]: #on va chercher les voisins du point de départ "src"
-                if not noeud_visite[voisin[0]] and power>=voisin[1]: # on s'assure que power est bien supérieure ou égale à power_min
-                        noeud_visite[voisin[0]]=True
-                        composante= dfs3(voisin[0], path+[voisin[0]])
-                        distance+=voisin[2]
-                        if composante is not None:
-                            return distance
-            return None    #on retourne None au cas où la puissance power n'est pas suffisante
-        return dfs3(src, [src])
+    def get_path_with_power2(self, src, dest, power):
+            noeud_visite = {noeud:False for noeud in self.nodes}
+
+            def dfs3(node, path):
+                distance=0
+                if node==dest: #on arrête le trajet quand on a atteint la destination souhaitée dest
+                    return path
+                for voisin in self.graph[node]: #on va chercher les voisins du point de départ "src"
+                    if not noeud_visite[voisin[0]] and power>=voisin[1]: # on s'assure que power est bien supérieure ou égale à power_min
+                            noeud_visite[voisin[0]]=True
+                            composante= dfs3(voisin[0], path+[voisin[0]])
+                            distance+=voisin[2]
+                            if composante is not None:
+                                return distance
+                return None    #on retourne None au cas où la puissance power n'est pas suffisante
+            return dfs3(src, [src])
 
 
         
