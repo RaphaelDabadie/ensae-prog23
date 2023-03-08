@@ -1,8 +1,7 @@
-from graph import Graph, graph_from_file
+from graph import Graph
 
 
-
-g = graph_from_file("input/network.00.in")
+g = get_path_with_power('input/network.00.in', 1, 4, 10)
 print(g)
 
 

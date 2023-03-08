@@ -119,23 +119,6 @@ class Graph:
         """
         Should return path, min_power. 
         """
-        #liste triée de toutes les power, partir de la puissance du milieu et utiliser gpwp. Si on en a, on va chercher voiture avec puissance plus basse et inversement sinon
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         def get_path_with_power(self, src, dest, power):
             noeud_visite = {noeud:False for noeud in self.nodes}
 
@@ -151,22 +134,47 @@ class Graph:
                 return None    #on retourne None au cas où la puissance power n'est pas suffisante
             return dfs2(src, [src])
 
-        #Réutiliser la question 3, calculer les puissances min nécessaires en comparant entre les trajets
-        puissance=0
-        puissance_min=float('inf')
-        chemins_possibles=get_path_with_power(self, src, dest, puissance_min)
-        if chemins_possibles==None:
-            return None
-        else :
-            for el in chemins_possibles:
-                for j in range (el):
-                    for i in range (len(self.graph[j])):
-                        if self.graph[j][i]==el[j+1]:
-                            puissance+=self.graph[j][i][1]
-                    if puissance<=puissance_min:
-                        puissance_min=puissance
-            return puissance_min
+        #liste triée de toutes les power, partir de la puissance du milieu et utiliser gpwp. Si on en a, on va chercher voiture avec puissance plus basse et inversement sinon
+        powers_list=[]
+        for node in self.nodes:
+            if self.graph[node][1] not in powers_list:
+                powers_list.append(self.graph[node][1]) 
+        powers_list.sort()
+        middle=(len(powers_list)//2)
+        puissance=powers_list[middle] #on part de la puissance du milieu
+        if get_path_with_power(src,dest,puissance)==None: #dans ce cas on doit augmenter la puissance du camion
+            while get_path_with_power(src,dest,puissance)==None:
+                puissance=powers_list[middle+1]
+            return (get_path_with_power(src,dest,puissance), puissance)
+        else:
+                puissance=powers_list[middle-1]
+                if get_path_with_power(src,dest,puissance)==None:
+                    return((get_path_with_power(src,dest,powers_list[middle]), powers_list[middle]))
+                else:
+                    while not get_path_with_power(src,dest,puissance)==None:
+                        puissance=powers_list[middle-1]
+                    return (get_path_with_power(src,dest,puissance+1), puissance+1)
 
+
+        
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
 
 
