@@ -1,3 +1,16 @@
+class Union_Find:
+    def __init__(self,set):
+        self.partition=[[x] for x in set]
+    def find(self,x):
+        for subset in self.partition:
+            if x in subset:
+                return subset
+    def union(self,x1,x2):
+        subset_x1,subset_x2=self.find(x1),self.find(x2)
+        self.partition=([subset for subset in self.partition if (subset!=subset_x1 and subset!=subset_x2)]+[subset_x1+subset_x2])
+
+
+
 class Graph:
     """
     A class representing graphs as adjacency lists and implementing various algorithms on the graphs. Graphs in the class are not oriented. 
@@ -153,23 +166,24 @@ class Graph:
         #liste triée de toutes les power, partir de la puissance du milieu et utiliser gpwp. Si on en a, on va chercher voiture avec puissance plus basse et inversement sinon
         powers_list=[]
         for node in self.nodes:
-            if self.graph[node][1] not in powers_list:
-                powers_list.append(self.graph[node][1]) 
+            for voisin in self.graph[node]:
+                if voisin[1] not in powers_list:
+                    powers_list.append(voisin[1]) 
         powers_list.sort()
         middle=(len(powers_list)//2)
         puissance=powers_list[middle] #on part de la puissance du milieu
-        if get_path_with_power(src,dest,puissance)==None: #dans ce cas on doit augmenter la puissance du camion
-            while get_path_with_power(src,dest,puissance)==None:
+        if get_path_with_power(self,src,dest,puissance)==None: #dans ce cas on doit augmenter la puissance du camion
+            while get_path_with_power(self,src,dest,puissance)==None:
                 puissance=powers_list[middle+1]
-            return (get_path_with_power(src,dest,puissance), puissance)
+            return (get_path_with_power(self,src,dest,puissance), puissance)
         else:
-                puissance=powers_list[middle-1]
-                if get_path_with_power(src,dest,puissance)==None:
-                    return((get_path_with_power(src,dest,powers_list[middle]), powers_list[middle]))
-                else:
-                    while not get_path_with_power(src,dest,puissance)==None:
-                        puissance=powers_list[middle-1]
-                    return (get_path_with_power(src,dest,puissance+1), puissance+1)
+            puissance=powers_list[middle-1]
+            if get_path_with_power(self,src,dest,puissance)==None:
+                return((get_path_with_power(self,src,dest,powers_list[middle]), powers_list[middle]))
+            else:
+                while not get_path_with_power(self,src,dest,puissance)==None:
+                    puissance=powers_list[middle-1]
+                return (get_path_with_power(self,src,dest,puissance+1), puissance+1)
 
 
         
@@ -236,6 +250,41 @@ def graph_from_file(filename):
             else :
                 G.add_edge(node1, node2, power_min, dist=1)
     return G
+
+
+
+#Question 7
+#import graphviz
+#f = graphviz.Digraph(filename = “graphique question 8”)
+
+
+
+#Question 12
+#Rmq on utilise pour cette question la structure d'Union Find définie plus haut
+def kruskal(self):
+    A=dict([(n, []) for n in self.nodes])
+    unionfind=Union_Find(self.nodes)
+    L=self.liste_arretes
+    L.sort()
+    #verifier 
+    for edge in L:
+        a=edge[0]
+        b=edge[1]
+        p=edge[2]
+        d=esge[3]
+        if unionfind.find(a)[0]!=unionfind.find(b)[0]:
+            A[a].append((b,p,d))
+            A[b].append((a,p,d))
+            unionfind.union(a,b)
+
+
+
+
+
+
+
+
+
 
 
 
