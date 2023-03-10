@@ -54,7 +54,17 @@ def kruskal(G):
 #Question 14
 def min_power_bis(G, node1, node2):
     A=kruskal(G)
-    return G.get_path_with_power(node1,node2,float('inf'))
+    path=A.get_path_with_power(node1,node2,float('inf'))
+    min=0
+    for i in range(len(path)-2):
+        j=0
+        while A.graph[i][j][0]!=path[i+1]:
+            j+=1
+        if A.graph[i][j][1]>min:
+            min=A.graph[i][j][1]
+    return (min,path)
+
+
 
 
 
