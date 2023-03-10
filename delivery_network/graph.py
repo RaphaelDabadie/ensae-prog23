@@ -148,47 +148,30 @@ class Graph:
         """
         Should return path, min_power. 
         """
-        def get_path_with_power(self, src, dest, power):
-            noeud_visite = {noeud:False for noeud in self.nodes}
-
-            def dfs2(node, path):
-                if node==dest: #on arrête le trajet quand on a atteint la destination souhaitée dest
-                    return path
-                for voisin in self.graph[node]: #on va chercher les voisins du point de départ "src"
-                    if not noeud_visite[voisin[0]] and power>=voisin[1]: # on s'assure que power est bien supérieure ou égale à power_min
-                            noeud_visite[voisin[0]]=True
-                            composante = dfs2(voisin[0], path+[voisin[0]])
-                            if composante is not None:
-                                return composante
-                return None    #on retourne None au cas où la puissance power n'est pas suffisante
-            return dfs2(src, [src])
-
-        #liste triée de toutes les power, partir de la puissance du milieu et utiliser gpwp. Si on en a, on va chercher voiture avec puissance plus basse et inversement sinon
         powers_list=[]
         for node in self.nodes:
             for voisin in self.graph[node]:
                 if voisin[1] not in powers_list:
                     powers_list.append(voisin[1]) 
         powers_list.sort()
-        middle=(len(powers_list)//2)
-        puissance=powers_list[middle] #on part de la puissance du milieu
-        if get_path_with_power(self,src,dest,puissance)==None: #dans ce cas on doit augmenter la puissance du camion
-            while get_path_with_power(self,src,dest,puissance)==None:
-                puissance=powers_list[middle+1]
-            return (get_path_with_power(self,src,dest,puissance), puissance)
-        else:
-            puissance=powers_list[middle-1]
-            if get_path_with_power(self,src,dest,puissance)==None:
-                return((get_path_with_power(self,src,dest,powers_list[middle]), powers_list[middle]))
-            else:
-                while not get_path_with_power(self,src,dest,puissance)==None:
-                    puissance=powers_list[middle-1]
-                return (get_path_with_power(self,src,dest,puissance+1), puissance+1)
-
-
+        maximum=len(powers_list)
+        minimum=0
+        if self.get_path_with_power(src,dest,powers_list[0])!=None:
+            return (self.get_path_with_power(src,dest,powers_list[minimum]),powers_list[minimum])
+        while maximum>minimum+1:
+            middle=(maximum+minimum)//2
+            middle_power=powers_list[middle]
+            if self.get_path_with_power(src,dest,middle_power)==None:
+                minimum=middle
+            else : 
+                maximum=middle
+        return (get_path_with_power(src,dest,powers_list[maximum]), powers_list[maximum])
         
 
-            
+    
+
+
+
 
 
 
@@ -261,23 +244,42 @@ def graph_from_file(filename):
 
 #Question 12
 #Rmq on utilise pour cette question la structure d'Union Find définie plus haut
-def kruskal(self):
-    A=dict([(n, []) for n in self.nodes])
-    unionfind=Union_Find(self.nodes)
-    L=self.liste_arretes
-    L.sort()
-    #verifier 
+#On définit préalablement une fonction liste_arêtes qui prend en argument un graphe et renvoie la liste des arêtes
+
+def liste_aretes(G):
+    L=[]
+    for node in G.nodes:
+        for neighbour in G[node]:
+            L.append((neighbour[1],node,neighbour[0],neighbour[2]))
+    return L
+
+
+
+def kruskal(G):
+    A=Graph(G.nodes)
+    unionfind=Union_Find(G.nodes)
+    L=liste_aretes(G)
+    L.sort() 
     for edge in L:
-        a=edge[0]
-        b=edge[1]
-        p=edge[2]
+        a=edge[1]
+        b=edge[2]
+        p=edge[0]
         d=esge[3]
         if unionfind.find(a)[0]!=unionfind.find(b)[0]:
-            A[a].append((b,p,d))
-            A[b].append((a,p,d))
+            A.add_edge(a,b,p,d)
             unionfind.union(a,b)
+    return A
 
 
+
+#Question 14
+#def min_power_bis(G, node1, node2):
+    #A=kruskal(G)
+    #path=[]
+    #stack=[node1]
+    #while stack != []:
+        #node=stack.pop()
+        #return path+
 
 
 
