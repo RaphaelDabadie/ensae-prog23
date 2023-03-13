@@ -154,8 +154,9 @@ class Graph:
                 minimum=middle
             else : 
                 maximum=middle
-        return (get_path_with_power(src,dest,powers_list[maximum]), powers_list[maximum])
+        return (self.get_path_with_power(src,dest,powers_list[maximum]), powers_list[maximum])
         
+
 
     
 
