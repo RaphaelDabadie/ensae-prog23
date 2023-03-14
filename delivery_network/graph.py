@@ -226,10 +226,6 @@ def graph_from_file(filename):
 
 
 
-#Question 7
-#import graphviz
-#f = graphviz.Digraph(filename = “graphique question 8”)
-
 
 
 
