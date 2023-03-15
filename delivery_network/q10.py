@@ -13,7 +13,7 @@ def test_routes_n(n, nombre_essais):
         s=0
         for i in range(nombre_essais):
             lignei=file.readline().split()
-            if len(lignei)>1:
+            if len(lignei)>1: #premier élément du fichier routes pose problème donc on l'exclut
                 ville1= int(lignei[0])
                 ville2= int(lignei[1])
                 g.min_power(ville1, ville2)

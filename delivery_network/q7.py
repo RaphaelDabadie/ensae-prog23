@@ -21,6 +21,7 @@ L=[]
 for node in g.graph:
     edges=g.graph[node]
     for i in range (len(edges)):
+        #Edge prend en arguments des chaines de caractères donc on veille à ce que les paramètres soient des str
         neighbor=str(g.graph[node][i][0])
         power=str(g.graph[node][i][1])
         distance=str(g.graph[node][i][2])

@@ -79,25 +79,32 @@ class Graph:
         return dfs2(src, [src])
 
 
-#question 5 
+#question 5 : on utilise Dijkstra
 
 
-    def get_path_with_power2(self, src, dest, power):
-            noeud_visite = {noeud:False for noeud in self.nodes}
+    def get_path_with_power_dijkstra(self, src, dest, power):
+        d=dict([(node,(float('inf'),node)) for node in self.nodes])
+        d[src]=0
+        H, F= [], [(0,src)]
+        while F!=[]:
+            node=F.pop()
+            for neighbor in self.graph[node]:
+                if neighbor[1]<=power and (d[neighbor[0]][0], neighbor[0]) not in (F+H):
+                    x=d[node[1]][1]+neighbor[2]
+                    if x<d[neighbor[0]]:
+                        d[neighbor[0]]=(x,node)
+                        F=sorted(F.append(d[neighbor[0]][0], neighbor[0]), reverse=True)
+                        H.append(node)
+        if d[dest][1]==float("inf"):
+            return None
+        else:
+            path,node=[dest],dest
+            while node!=src:
+                node=d[node][1]
+                path.append(node)
+            return reversed(path)
 
-            def dfs3(node, path):
-                distance=0
-                if node==dest: #on arrête le trajet quand on a atteint la destination souhaitée dest
-                    return path
-                for voisin in self.graph[node]: #on va chercher les voisins du point de départ "src"
-                    if not noeud_visite[voisin[0]] and power>=voisin[1]: # on s'assure que power est bien supérieure ou égale à power_min
-                            noeud_visite[voisin[0]]=True
-                            composante= dfs3(voisin[0], path+[voisin[0]])
-                            distance+=voisin[2]
-                            if composante is not None:
-                                return distance
-                return None    #on retourne None au cas où la puissance power n'est pas suffisante
-            return dfs3(src, [src])
+
 
 
         
@@ -109,14 +116,14 @@ class Graph:
     def connected_components(self):
         listes_composantes =[]
         noeud_visite = {noeud:False for noeud in self.nodes}
-
+        #On code d'abord un parcours en profondeur
         def dfs(noeud):
             componante =[noeud]
-            for neighbour in self.graph[noeud]:
-                neighbour= neighbour[0]
-                if not noeud_visite[neighbour]:
-                    noeud_visite[neighbour]=True
-                    componante+= dfs(neighbour)
+            for neighbor in self.graph[noeud]:
+                neighbor= neighbor[0]
+                if not noeud_visite[neighbor]:
+                    noeud_visite[neighbor]=True
+                    componante+= dfs(neighbor)
             return (componante)
 
         for noeud in self.nodes:
@@ -137,6 +144,7 @@ class Graph:
         """
         Should return path, min_power. 
         """
+        #on crée une liste regroupant l'ensemble des puissances, on la trie dans l'ordre croissant, puis on recherche la puissance minimum avec une recherche dichotomique
         powers_list=[]
         for node in self.nodes:
             for voisin in self.graph[node]:
@@ -207,18 +215,18 @@ def graph_from_file(filename):
         An object of the class Graph with the graph from file_name.
     """
     with open(filename) as file:
-        ligne1 = file.readline().split()
-        n=int(ligne1[0])
-        m=int(ligne1[1])
+        line1 = file.readline().split()
+        n=int(line1[0])
+        m=int(line1[1])
         nodes= [i for i in range (1,n+1)]
         G=Graph(nodes)
         for i in range(m):
-            lignei=file.readline().split()
-            node1= int(lignei[0])
-            node2= int(lignei[1])
-            power_min=int(lignei[2])
-            if len(lignei)>3:
-                dist = int(lignei[3])
+            linei=file.readline().split()
+            node1= int(linei[0])
+            node2= int(linei[1])
+            power_min=int(linei[2])
+            if len(linei)>3:
+                dist = int(linei[3])
                 G.add_edge(node1, node2, power_min, dist)
             else :
                 G.add_edge(node1, node2, power_min, dist=1)
