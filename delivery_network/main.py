@@ -56,12 +56,14 @@ def min_power_bis(G, node1, node2):
     A=kruskal(G)
     path=A.get_path_with_power(node1,node2,float('inf'))
     min=0
+    #On obtient une liste path qui contient l'ensemble des noeuds du chemin entre node1 et node2
+    #Dans la suite de la fonction, on calcule, le puissance minimale nécessaire pour parcourir ce chemin
     for i in range(len(path)-2):
         j=0
-        while A.graph[i][j][0]!=path[i+1]:
+        while A.graph[path[i]][j][0]!=path[i+1]:
             j+=1
         if A.graph[i][j][1]>min:
-            min=A.graph[i][j][1]
+            min=A.graph[path[i]][j][1]
     return (min,path)
 
 

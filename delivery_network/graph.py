@@ -151,6 +151,7 @@ class Graph:
                 if voisin[1] not in powers_list:
                     powers_list.append(voisin[1]) 
         powers_list.sort()
+        #passage précédent à revoir, optimiser (notamment utiliser un set)
         maximum=len(powers_list)
         minimum=0
         if self.get_path_with_power(src,dest,powers_list[0])!=None:
@@ -160,7 +161,7 @@ class Graph:
             middle_power=powers_list[middle]
             if self.get_path_with_power(src,dest,middle_power)==None:
                 minimum=middle
-            else : 
+            else :
                 maximum=middle
         return (self.get_path_with_power(src,dest,powers_list[maximum]), powers_list[maximum])
         
