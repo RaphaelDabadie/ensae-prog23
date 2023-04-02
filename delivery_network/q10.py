@@ -25,6 +25,6 @@ def test_routes_n(n, nombre_essais):
 
 
 test_routes_n(3, 2)
-test_routes_n(4, 1)
-test_routes_n(5, 1)
-test_routes_n(6, 1)
+#test_routes_n(4, 1)
+#test_routes_n(5, 1)
+#test_routes_n(6, 1)

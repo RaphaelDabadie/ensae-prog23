@@ -64,17 +64,19 @@ class Graph:
     
 
     def get_path_with_power(self, src, dest, power):
-        noeud_visite = {noeud:False for noeud in self.nodes}
+        visited = set() #mieux que dictionnaire initialement utilisé
 
         def dfs2(node, path):
             if node==dest: #on arrête le trajet quand on a atteint la destination souhaitée dest
                 return path
-            for voisin in self.graph[node]: #on va chercher les voisins du point de départ "src"
-                if not noeud_visite[voisin[0]] and power>=voisin[1]: # on s'assure que power est bien supérieure ou égale à power_min
-                        noeud_visite[voisin[0]]=True
-                        composante = dfs2(voisin[0], path+[voisin[0]])
+
+            visited.add(node)
+            for neighbor, edge_power, edge_dist in self.graph[node]: #on va chercher les couples (voisins, puissance) du point de départ "src"
+                if neighbor not in visited and power>=edge_power: # on s'assure que power est bien supérieure ou égale à power_min
+                        composante = dfs2(neighbor, path+[neighbor])
                         if composante is not None:
                             return composante
+            visited.remove(node)
             return None    #on retourne None au cas où la puissance power n'est pas suffisante
         return dfs2(src, [src])
 
@@ -215,7 +217,7 @@ def graph_from_file(filename):
     G: Graph
         An object of the class Graph with the graph from file_name.
     """
-    with open(filename) as file:
+    with open(filename) as file: #with assure la fermeture du fichier après lecture
         line1 = file.readline().split()
         n=int(line1[0])
         m=int(line1[1])

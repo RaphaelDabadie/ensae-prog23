@@ -31,5 +31,5 @@ for node in g.graph:
         continue
 
 
-Graphe_a_afficher.render('graphefinal.dot', view=True)
+Graphe_a_afficher.render('graphefinal', view=True, format='png')
 
