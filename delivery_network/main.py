@@ -2,24 +2,24 @@ from graph import Graph
 
 class UnionFind:
     def __init__(self, nodes):
+        #on initialise chaque noeud comme son propre parent 
         self.parent = {node: node for node in nodes}
         self.rank = {node: 0 for node in nodes}
 
-    def find(self, node):
-        if self.parent[node] != node:
+    def find(self, node): #Trouver la racine d'un noeud 
+        if self.parent[node] != node: #idée : lorsque le noeud n'est pas la racine, remonter dans l'arbre
             self.parent[node] = self.find(self.parent[node])
         return self.parent[node]
 
-    def union(self, node1, node2):
-        root1, root2 = self.find(node1), self.find(node2)
-
-        if root1 != root2:
-            if self.rank[root1] > self.rank[root2]:
-                self.parent[root2] = root1
+    def union(self, node1, node2): #on fusionne deux ensembles différents (ie pas la même racine)
+        rac1, rac2 = self.find(node1), self.find(node2)
+        if rac1 != rac2:
+            if self.rank[rac1] > self.rank[rac2]:
+                self.parent[rac2] = rac1
             else:
-                self.parent[root1] = root2
-                if self.rank[root1] == self.rank[root2]:
-                    self.rank[root2] += 1
+                self.parent[rac1] = rac2
+                if self.rank[rac1] == self.rank[rac2]:
+                    self.rank[rac2] += 1
 
 
 
@@ -56,13 +56,13 @@ def kruskal(G):
 
 
 def min_power_bis(G, node1, node2):
-    A = kruskal(G)
+    A = kruskal(G) #arbre couvrant de poids minimum
     path = A.get_path_with_power(node1, node2, float('inf'))
-    min_power = 0
-    for node, next_node in zip(path[:-1], path[1:]):
-        edge_index = next((i for i, edge in enumerate(A.graph[node]) if edge[0] == next_node), None)
-        edge_power = A.graph[node][edge_index][1]
-        min_power = max(min_power, edge_power)
+    #min_power correspond à la puissance minimale nécessaire pour parcourir le chemin : pour cela on trouve l'arête de poids maximal dans ce chemin
+    min_power = max(edge[1] for node, edge_list in A.graph.items() for edge in edge_list if ((edge[0] in path) and (node in path)))
 
     return (min_power, path)
+
+
+
 

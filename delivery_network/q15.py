@@ -30,5 +30,7 @@ def test_routes_n_bis(n, nombre_essais):
 
 test_routes_n_bis(3, 150)
 test_routes_n_bis(4, 150) 
-test_routes_n_bis(5, 150) 
+test_routes_n_bis(5, 1000) 
 test_routes_n_bis(6, 150)
+
+
