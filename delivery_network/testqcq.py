@@ -9,5 +9,5 @@ g = graph_from_file(data_path + file_name)
 r=kruskal(g)
 print(r)
 
-#optimiser union find et kruskal
+
  

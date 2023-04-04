@@ -59,7 +59,7 @@ def min_power_bis(G, node1, node2):
     A = kruskal(G) #arbre couvrant de poids minimum
     path = A.get_path_with_power(node1, node2, float('inf'))
     #min_power correspond à la puissance minimale nécessaire pour parcourir le chemin : pour cela on trouve l'arête de poids maximal dans ce chemin
-    min_power = max(edge[1] for node, edge_list in A.graph.items() for edge in edge_list if ((edge[0] in path) and (node in path)))
+    min_power = max(edge[1] for node, list_edge in A.graph.items() for edge in list_edge if ((edge[0] in path) and (node in path)))
 
     return (min_power, path)
 
