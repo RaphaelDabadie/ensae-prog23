@@ -19,6 +19,8 @@ def test_routes_n_bis(n, nombre_essais):
                 ville2= int(lignei[1])
                 if lignei[0] in g.nodes:
                     puissance= min_power_bis(g,ville1, ville2)
+                    fichier.write(puissance)
+                    fichier.close()
                 else:
                     continue
             else:
@@ -28,12 +30,11 @@ def test_routes_n_bis(n, nombre_essais):
     print("Temps d'exécution pour le fichier routes " + numero + " en secondes:",(t1_stop-t1_start)*(s/nombre_essais))
 
 
-test_routes_n_bis(3, 150)
-test_routes_n_bis(4, 150) 
-test_routes_n_bis(5, 150) 
-test_routes_n_bis(6, 150)
-test_routes_n_bis(7, 150)
-
+test_routes_n_bis(3, 15)
+test_routes_n_bis(4, 15) 
+test_routes_n_bis(5, 15) 
+test_routes_n_bis(6, 15)
+test_routes_n_bis(7, 15)
 
 
 
