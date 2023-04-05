@@ -1,6 +1,6 @@
 from time import perf_counter
 from graph import Graph, graph_from_file
-from main import UnionFind, min_power_bis
+from main import min_power_bis
 
 
 #On va faire tourner min_power_bis sur les 'nombre_essais' premiers trajets de routes.n.in
@@ -25,12 +25,15 @@ def test_routes_n_bis(n, nombre_essais):
                 s+=int(lignei[0])
         t1_stop = perf_counter()
 
-    print("Temps d'exécution pour le fichier routes " + numero + " en secondes:",(t1_stop-t1_start)*s/nombre_essais)
+    print("Temps d'exécution pour le fichier routes " + numero + " en secondes:",(t1_stop-t1_start)*(s/nombre_essais))
 
 
 test_routes_n_bis(3, 150)
 test_routes_n_bis(4, 150) 
-test_routes_n_bis(5, 1000) 
+test_routes_n_bis(5, 150) 
 test_routes_n_bis(6, 150)
+test_routes_n_bis(7, 150)
+
+
 
 
