@@ -7,6 +7,8 @@ class UnionFind:
         self.rank = {node: 0 for node in nodes}
 
     def find(self, node): #Trouver la racine d'un noeud 
+        if node not in self.parent:
+            raise KeyError(f"Noeud {node} introuvable dans UnionFind")
         if self.parent[node] != node: #idée : lorsque le noeud n'est pas la racine, remonter dans l'arbre
             self.parent[node] = self.find(self.parent[node])
         return self.parent[node]
@@ -20,7 +22,10 @@ class UnionFind:
                 self.parent[rac1] = rac2
                 if self.rank[rac1] == self.rank[rac2]:
                     self.rank[rac2] += 1
-
+    def print_nodes(self):
+        print("Noeuds présents dans UnionFind:")
+        for node in self.parent:
+            print(node)
 
 
 
@@ -41,6 +46,7 @@ def liste_aretes(G):
 def kruskal(G):
     A=Graph(G.nodes)
     unionfind = UnionFind(list(G.graph.keys()))
+    unionfind.print_nodes()
     L=liste_aretes(G)
     L.sort(key=lambda x: x[0])  #On trie les arêtes en fonction du premier élément
     for edge in L:
