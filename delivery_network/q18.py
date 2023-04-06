@@ -67,27 +67,6 @@ def cout_trajet(G,node1,node2,tracks):
 
 ###Implémentation de l'algorithme glouton
 
-def algo_glouton(graphe,tracks):
-    useful_tracks= useful_tracks(tracks)
-    #on calcule la liste triée par ordre décroisant des rapports entre le gain rapporté par un trajet et le cout minimal nécessaire pour le parcourir 
-    liste=[]
-    for node1 in graph.nodes:###c'est sans doutes mieux d'énumérer sur la liste des trajets car pas forcément tous les couples de noeuds font partie des trajets à couvrir
-        for node2 in graph.nodes:
-            c=cout_trajet(graph,node1,node2,tracks)
-            if c!=None:
-                gain=#à compléter
-                x=(gain/c,c,node1,node2)
-                liste.append(x)
-    sorted(liste, reversed=True) ####à trier par ordre décroissant
-    cost=0
-    nouvelle_liste=[]
-    for i in range(len(liste)):
-        if cost+liste[i][1] <= B:
-            nouvelle_liste.append(liste[i])
-            cost+=liste[i][1]
-    return nouvelle_liste
-
-    #pour chacun des éléments de la liste, on choisit le trajet si la somme des trajets est 
 
 def algo_glouton(graphe,tracks,routes):
     #routes est une liste de triplets (noeud1,noeud2,gain), tracks une liste de couples (puissance, cout) supposée triée par ordre décroissant
@@ -106,7 +85,5 @@ def algo_glouton(graphe,tracks,routes):
         if cost+liste[i][1] <= B:
             nouvelle_liste.append(liste[i])
             cost+=liste[i][1]
-    return nouvelle_liste   
-
-
+    return nouvelle_liste      
     

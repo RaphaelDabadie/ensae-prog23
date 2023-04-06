@@ -82,21 +82,24 @@ class Graph:
         return dfs2(src, [src])
 
 
+
+
+
 #question 5 : on utilise Dijkstra
 
-
     def get_path_with_power_dijkstra(self, src, dest, power):
-        d=dict([(node,(float('inf'),node)) for node in self.nodes])
-        d[src]=0
-        H, F= [], [(0,src)]
+        d=dict([(node,[float('inf'),node]) for node in self.nodes])
+        d[src]=(0,src)
+        H, F= [], [src]
         while F!=[]:
             node=F.pop()
             for neighbor in self.graph[node]:
-                if neighbor[1]<=power and (d[neighbor[0]][0], neighbor[0]) not in (F+H):
-                    x=d[node[1]][1]+neighbor[2]
-                    if x<d[neighbor[0]]:
+                if neighbor[1]<=power and neighbor[0] not in (F+H):
+                    x=d[node][0]+neighbor[2]
+                    if x<d[neighbor[0]][0]:
                         d[neighbor[0]]=(x,node)
-                        F=sorted(F.append(d[neighbor[0]][0], neighbor[0]), reverse=True)
+                        F.append(neighbor[0])
+                        F=sorted(F, reverse=True)
                         H.append(node)
         if d[dest][1]==float("inf"):
             return None
@@ -105,10 +108,8 @@ class Graph:
             while node!=src:
                 node=d[node][1]
                 path.append(node)
-            return reversed(path)
-
-
-
+            path.reverse()
+            return path
 
         
     
