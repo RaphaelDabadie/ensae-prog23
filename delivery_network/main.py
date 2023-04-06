@@ -68,7 +68,3 @@ def min_power_bis(G, node1, node2):
     min_power = max(edge[1] for node, list_edge in A.graph.items() for edge in list_edge if ((edge[0] in path) and (node in path))) #on verifie à la fin que l'arête connecte bien deux noeuds présents dans le chemin trouvé. 
     #on choisit un camion qui a au moins une puissance permettant de passer par l'arête de poids max
     return (min_power, path)
-
-
-
-

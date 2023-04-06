@@ -57,6 +57,7 @@ class Graph:
         dist: numeric (int or float), optional
             Distance between node1 and node2 on the edge. Default is 1.
         """
+        
         self.nb_edges+=1
         self.graph[node1].append((node2,power_min, dist))
         self.graph[node2].append((node1,power_min, dist))
@@ -153,7 +154,6 @@ class Graph:
                 if voisin[1] not in powers_list:
                     powers_list.append(voisin[1]) 
         powers_list.sort()
-        #passage précédent à revoir, optimiser (notamment utiliser un set)
         maximum=len(powers_list)
         minimum=0
         if self.get_path_with_power(src,dest,powers_list[0])!=None:
@@ -224,11 +224,11 @@ def graph_from_file(filename):
         nodes= [i for i in range (1,n+1)]
         G=Graph(nodes)
         for i in range(m):
-            linei=file.readline().split()
+            linei=file.readline().split() #on lit chaque ligne du fichier
             node1= int(linei[0])
             node2= int(linei[1])
             power_min=int(linei[2])
-            if len(linei)>3:
+            if len(linei)>3: #cas où on doit prendre en compte la distance
                 dist = int(linei[3])
                 G.add_edge(node1, node2, power_min, dist)
             else :
