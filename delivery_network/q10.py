@@ -27,5 +27,5 @@ def test_routes_n(n, nombre_essais):
     return temps_execution
 
 test_routes_n(1, 10)
-#test_routes_n(2, 10)
+test_routes_n(2, 10)
 test_routes_n(3, 10)

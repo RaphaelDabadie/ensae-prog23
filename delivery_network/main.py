@@ -38,7 +38,7 @@ def liste_aretes(G):
     for node in G.nodes:
         for neighbour in G.graph[node]:
             if node < neighbour[0]: #éviter les doublons du type (node1,node2) (node2,node1)
-                L.append((neighbour[1],node,neighbour[0],neighbour[2]))
+                L.append((neighbour[0],node,neighbour[1],neighbour[2]))
     return L
 
 
@@ -46,9 +46,9 @@ def liste_aretes(G):
 def kruskal(G):
     A=Graph(G.nodes)
     unionfind = UnionFind(list(G.graph.keys()))
-    unionfind.print_nodes()
     L=liste_aretes(G)
-    L.sort(key=lambda x: x[0])  #On trie les arêtes en fonction du premier élément
+    L.sort(key=lambda x: x[0])
+    #On trie les arêtes en fonction du premier élément
     for edge in L:
         a, b, p, d = edge
         if unionfind.find(a)!=unionfind.find(b):

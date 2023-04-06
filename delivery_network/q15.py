@@ -33,7 +33,7 @@ def test_routes_n_bis(n, nombre_essais):
     print("Temps d'exécution pour le fichier routes " + numero + " en secondes:",(t1_stop-t1_start)*(s/nombre_essais)),
 
 
-test_routes_n_bis(3, 15)
+test_routes_n_bis(1, 15)
 test_routes_n_bis(4, 15) 
 test_routes_n_bis(5, 15) 
 test_routes_n_bis(6, 15)
